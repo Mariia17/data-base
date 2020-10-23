@@ -1,6 +1,8 @@
 import * as fs from "fs";
+import path from "path";
 class Database {
-  constructor(path) {
+  path: string;
+  constructor(path: string) {
     this.path = path;
     fs.writeFile(path, "[]", { flag: "wx+" }, (err) => {
       if (err) {
@@ -14,13 +16,13 @@ class Database {
       }
     });
   }
-  addUser(userData) {
+  addUser(userData: { name: string; surname: string; age: string; occupation: string }) {
     fs.readFile(this.path, { encoding: "utf8", flag: "r+" }, (err, data) => {
       if (err) throw err;
       const database = JSON.parse(data);
       const userId = userData.name + userData.surname;
       const userObject = { userId: userId, userData: userData };
-      const isNewUser = !database.some((item) => item.userId === userId);
+      const isNewUser = !database.some((item: { userId: string }) => item.userId === userId);
       if (isNewUser) {
         database.push(userObject);
         fs.writeFile(this.path, JSON.stringify(database), { flag: "w+" }, (err) => {
@@ -34,7 +36,7 @@ class Database {
   }
 }
 
-const myDatabase = new Database("C:\\Users\\marij\\Documents\\MyBase.js");
+const myDatabase = new Database(path.join(__dirname, "myBase.js"));
 myDatabase.addUser({ name: "Иван", surname: "Иванов", age: "30", occupation: "Механик" });
 myDatabase.addUser({ name: "Иван", surname: "Иванов", age: "30", occupation: "Механик" });
 //myDatabase.changeUser("id", { ocuupation: "Инжинер" });

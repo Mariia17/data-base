@@ -1,5 +1,7 @@
 import * as fs from "fs";
-import path from "path";
+import path, { resolve } from "path";
+import { PathLike, WriteFileOptions } from "fs";
+import { rejects } from "assert";
 
 type JSONPrimitive = string | number | boolean | null;
 type JSONObject = { [x: string]: JSONValue };
@@ -14,18 +16,23 @@ class Database {
   private readonly path: string;
   constructor(path: string) {
     this.path = path;
-    fs.writeFile(path, "[]", { flag: "wx+" }, (err) => {
-      if (err) {
+  }
+
+  init(path: string) {
+    return promiseWriteFile(path, "[]", { flag: "wx+" }).then(
+      () => {
+        console.log("File saved");
+      },
+      (err) => {
         if (err.code === "EEXIST") {
           console.log("file exists");
         } else {
           throw err;
         }
-      } else {
-        console.log("File saved!");
       }
-    });
+    );
   }
+
   addUser(userData: JSONObject) {
     fs.readFile(this.path, { encoding: "utf8", flag: "r+" }, (err, data) => {
       if (err) throw err;
@@ -48,7 +55,17 @@ class Database {
     return this.generateId(id);
   }
 }
-
+const promiseWriteFile = (path: PathLike, data: string | NodeJS.ArrayBufferView, options: WriteFileOptions) => {
+  return new Promise((resolve, reject) => {
+    fs.writeFile(path, data, options, (err) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve();
+      }
+    });
+  });
+};
 const myDatabase = new Database(path.join(".", "myBase.json"));
 myDatabase.addUser({ name: "Иван", surname: "Иванов", age: "30", occupation: "s" });
 myDatabase.addUser({ name: "Иван", surname: "Иванов", age: "30", occupation: "Механик" });

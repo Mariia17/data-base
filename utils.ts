@@ -1,5 +1,5 @@
 import * as fs from "fs";
-import { PathLike, WriteFileOptions } from "fs";
+import { PathLike, WriteFileOptions, BaseEncodingOptions } from "fs";
 
 export const promiseWriteFile = (path: PathLike, data: string | NodeJS.ArrayBufferView, options: WriteFileOptions) => {
   return new Promise((resolve, reject) => {
@@ -15,10 +15,10 @@ export const promiseWriteFile = (path: PathLike, data: string | NodeJS.ArrayBuff
 
 export const promiseReadFile = (
   path: PathLike,
-  options: { encoding?: null | undefined; flag?: string | undefined } | null | undefined
+  options: (BaseEncodingOptions & { flag?: string }) | string | undefined | null
 ) => {
   return new Promise((resolve, reject) => {
-    fs.readFile(path, options, (err, data) => {
+    fs.readFile(path, options, (err, data: string | Buffer) => {
       if (err) {
         reject(err);
       } else {

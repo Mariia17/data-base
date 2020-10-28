@@ -16,7 +16,7 @@ export const promiseWriteFile = (path: PathLike, data: string | NodeJS.ArrayBuff
 export const promiseReadFile = (
   path: PathLike,
   options: (BaseEncodingOptions & { flag?: string }) | string | undefined | null
-) => {
+): Promise<string | Buffer> => {
   return new Promise((resolve, reject) => {
     fs.readFile(path, options, (err, data: string | Buffer) => {
       if (err) {

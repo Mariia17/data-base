@@ -35,29 +35,23 @@ class Database {
 
   addUser(userData: JSONObject) {
     return promiseReadFile(this.path, { encoding: "utf8", flag: "r+" })
-      .then(
-        (data) => {
-          const database: IUserObject[] = JSON.parse(data);
-          const userIdArray = database.map((item) => item.userId);
-          const userId = this.generateId(userIdArray);
-          const userObject: IUserObject = { userId: userId, userData: userData };
-          database.push(userObject);
-          return database;
-        },
-        (err) => {
-          throw err;
+      .then((data) => {
+        if (typeof data !== "string") {
+          throw new Error("string data expected");
         }
-      )
-      .then((database) =>
-        promiseWriteFile(this.path, JSON.stringify(database), { flag: "w+" }).then(
-          () => {
-            console.log("File saved!");
-          },
-          (err) => {
-            throw err;
-          }
-        )
-      );
+        const database: IUserObject[] = JSON.parse(data);
+        const userIdArray = database.map((item) => item.userId);
+        const userId = this.generateId(userIdArray);
+        const userObject: IUserObject = { userId: userId, userData: userData };
+        database.push(userObject);
+        return promiseWriteFile(this.path, JSON.stringify(database), { flag: "w+" });
+      })
+      .then(() => {
+        console.log("File saved!");
+      })
+      .catch((err) => {
+        throw err;
+      });
   }
 
   private generateId(id: string[]): string {

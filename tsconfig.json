@@ -12,10 +12,10 @@
     "baseUrl": ".",
     "outDir": "./dist",
     "paths": {
-      "*": ["./*"]
+      "*": ["./src/*"]
     },
     "typeRoots": ["node_modules/@types"]
   },
-  "include": ["./", "./node_modules/@types"],
-  "exclude": ["**/*.js", "./dist"]
+  "include": ["./src/", "./node_modules/@types"],
+  "exclude": ["**/*.js", "**/*.test.ts", "./dist"]
 }

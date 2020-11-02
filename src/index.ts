@@ -1,4 +1,4 @@
-import { promiseWriteFile, promiseReadFile } from "utils";
+import { promiseWriteFile, promiseReadFile } from "./utils";
 
 type JSONPrimitive = string | number | boolean | null;
 type JSONObject = { [x: string]: JSONValue };

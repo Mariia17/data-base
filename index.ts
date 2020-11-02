@@ -1,6 +1,3 @@
-import * as fs from "fs";
-import path, { resolve } from "path";
-import { rejects } from "assert";
 import { promiseWriteFile, promiseReadFile } from "utils";
 
 type JSONPrimitive = string | number | boolean | null;
@@ -60,11 +57,4 @@ class Database {
     return this.generateId(id);
   }
 }
-
-const myDatabase = new Database(path.join(".", "myBase.json"));
-myDatabase.addUser({ name: "Иван", surname: "Иванов", age: "30", occupation: "s" });
-myDatabase.addUser({ name: "Иван", surname: "Иванов", age: "30", occupation: "Механик" });
-//myDatabase.changeUser("id", { ocuupation: "Инжинер" });
-//myDatabase.deleteUser("id");
-//myDatabase.getDatabase();
-//myDatabase.getUser("id");
+export default Database;

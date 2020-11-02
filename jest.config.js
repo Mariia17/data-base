@@ -2,5 +2,5 @@ export default {
   preset: "ts-jest",
   testEnvironment: "node",
   coverageReporters: ["lcov"],
-  roots: ["src"],
+  roots: ["<rootDir>/src/"],
 };

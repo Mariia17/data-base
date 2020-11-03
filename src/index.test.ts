@@ -1,8 +1,15 @@
-import Database from './index';
+import Database from "./index";
+import { promiseWriteFile } from "./utils";
 
-test('test', () => {
-    const a = new Database('./myBase.js');
+jest.mock("fs");
 
-    // @ts-ignore
-    expect(a.path).toEqual('./myBase.js');
+test("test", () => {
+  const a = new Database("./myBase.js");
+
+  // @ts-ignore
+  expect(a.path).toEqual("./myBase.js");
+});
+
+test("writeFile", () => {
+  return promiseWriteFile("somepath", "data", "options");
 });

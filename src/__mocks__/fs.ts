@@ -7,7 +7,7 @@ export const shouldWriteFileFail = { value: false };
 
 fs.writeFile = (path, data, options, callback) => {
   setTimeout(() => {
-    if (shouldWriteFileFail.value) {
+    if (!shouldWriteFileFail.value) {
       callback(null);
     } else {
       callback(new Error());

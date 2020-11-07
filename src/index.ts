@@ -31,7 +31,7 @@ class Database {
         }
         const database: IUserObject[] = JSON.parse(data);
         const userIdArray = database.map((item) => item.userId);
-        const userId = this.generateId(userIdArray);
+        const userId = Database.generateId(userIdArray);
         const userObject: IUserObject = { userId: userId, userData: userData };
         database.push(userObject);
         return promiseWriteFile(this.path, JSON.stringify(database), { flag: "w+" });
@@ -44,10 +44,10 @@ class Database {
       });
   }
 
-  private generateId(id: string[]): string {
+  static generateId(id: string[]): string {
     const userId = Math.random().toString();
     if (!id.includes(userId)) return userId;
-    return this.generateId(id);
+    return Database.generateId(id);
   }
 }
 export default Database;

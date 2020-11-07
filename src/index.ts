@@ -16,18 +16,11 @@ class Database {
   }
 
   init() {
-    return promiseWriteFile(this.path, "[]", { flag: "wx+" }).then(
-      () => {
-        console.log("File saved");
-      },
-      (err) => {
-        if (err.code === "EEXIST") {
-          console.log("file exists");
-        } else {
-          throw err;
-        }
+    return promiseWriteFile(this.path, "[]", { flag: "wx+" }).catch((err) => {
+      if (err.code !== "EXIST") {
+        throw err;
       }
-    );
+    });
   }
 
   addUser(userData: JSONObject) {
